@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "201040755474",
+    "firebase_url": "https://fir-chat-b5cd8.firebaseio.com",
+    "project_id": "fir-chat-b5cd8",
+    "storage_bucket": "fir-chat-b5cd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201040755474:android:08873a7f97531974",
+        "android_client_info": {
+          "package_name": "com.shmeli.firebasechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201040755474-8ltcht542gvmbms2rlbll0d086pk6eh5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shmeli.firebasechat",
+            "certificate_hash": "d1e7f9e67814b373788dc1de149b1d9ea4b7bb5e"
+          }
+        },
+        {
+          "client_id": "201040755474-qqbtoltg5nvbbn8k1babq374b014mte4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYtVAdwlVM4Fji5MIdYIogOje10Shy9og"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201040755474-qqbtoltg5nvbbn8k1babq374b014mte4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
