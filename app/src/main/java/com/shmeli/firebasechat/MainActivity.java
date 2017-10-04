@@ -1,11 +1,14 @@
 package com.shmeli.firebasechat;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +30,8 @@ import com.shmeli.firebasechat.Model.Message;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private static int SIGN_IN_REQUEST_CODE = 1;
@@ -35,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout  activityMain;
     private Button          button;
+
+//    private Button          clearBtn;
+
+//    private boolean canPlaySound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +59,38 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText input = (EditText) findViewById(R.id.editText);
 
+//                FirebaseDatabase.getInstance().getReference().push().setValue(new Message(  input.getText().toString(),
+//                                                                                            FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+
                 FirebaseDatabase.getInstance().getReference().push().setValue(new Message(  input.getText().toString(),
-                                                                                            FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+                                                                                            FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                                                                                            true));
 
                 input.setText("");
             }
         });
 
+//        clearBtn = (Button) findViewById(R.id.btnClearAll);
+//        clearBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Log.e("LOG", "MainActivity: onCreate: clearBtn onClick(): adapter.getCount= " +adapter.getCount());
+//
+//                for(int i=0; i<adapter.getCount(); i++) {
+//                    //Message message = adapter.getItem(i);
+//                    FirebaseDatabase.getInstance().getReference().removeValue();
+//                }
+//
+//                adapter.cleanup();
+//            }
+//        });
+
+        Log.e("LOG", "MainActivity: onCreate: user is null: " +(FirebaseAuth.getInstance().getCurrentUser() == null));
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(),
-                    SIGN_IN_REQUEST_CODE);
+            startActivityForResult( AuthUI.getInstance().createSignInIntentBuilder().build(),
+                                    SIGN_IN_REQUEST_CODE);
         }
         else {
             displayChat();
@@ -67,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayChat() {
+        Log.e("LOG", "MainActivity: displayChat()");
 
         ListView messageList = (ListView) findViewById(R.id.listView);
 
@@ -88,15 +120,33 @@ public class MainActivity extends AppCompatActivity {
                 timeMessage = (TextView) v.findViewById(R.id.tvTime);
                 timeMessage.setText(DateFormat.format(  "dd-MM-yyyy (HH:mm:ss)",
                                                         model.getTimeMessage()));
+
+                if(model.isUnread()) {
+                    playMsgSound();
+
+//                    String msgText = model.getTextMessage();
+
+//                    FirebaseDatabase.getInstance().getReference().push().removeValue();
+//                    FirebaseDatabase.getInstance().getReference().push().setValue(  new Message(msgText,
+//                                                                                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+//                                                                                    false));
+
+                    model.setUnread(false);
+                    //model.setUnread(false);
+                }
             }
         };
 
         messageList.setAdapter(adapter);
+
+        //adapter.cleanup();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.e("LOG", "MainActivity: onActivityResult()");
 
         if(requestCode == SIGN_IN_REQUEST_CODE) {
 
@@ -133,5 +183,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void playMsgSound() {
+        Log.e("LOG", "MainActivity: playMsgSound()");
+
+        //Log.e("LOG", "MainActivity: playMsgSound(): canPlaySound: " +canPlaySound);
+
+//        if(canPlaySound) {
+
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.msg_sound);
+
+            if (mediaPlayer != null) {
+                mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {111
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                    }
+
+                    ;
+                });
+            }
+//        }
+//        else
+//            canPlaySound = !canPlaySound;
     }
 }

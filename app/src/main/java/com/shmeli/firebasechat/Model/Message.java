@@ -13,11 +13,17 @@ public class Message {
 
     private long timeMessage;
 
-    public Message(String textMessage, String author) {
-        this.textMessage = textMessage;
-        this.author = author;
+    private boolean isUnread;
+
+    //public Message(String textMessage, String author) {
+    public Message(String textMessage, String author, boolean isUnread) {
+        this.textMessage    = textMessage;
+        this.author         = author;
+        this.isUnread       = isUnread;
 
         timeMessage = new Date().getTime();
+
+        // isUnread = true;
     }
 
     public Message() {
@@ -45,5 +51,13 @@ public class Message {
 
     public void setTimeMessage(long timeMessage) {
         this.timeMessage = timeMessage;
+    }
+
+    public boolean isUnread() {
+        return isUnread;
+    }
+
+    public void setUnread(boolean unread) {
+        isUnread = unread;
     }
 }
